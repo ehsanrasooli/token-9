@@ -1,0 +1,20 @@
+const hre = require("hardhat");
+
+async function main() {
+  const [deployer] = await hre.ethers.getSigners();
+  console.log("Deploying with:", deployer.address);
+
+  const token = await hre.ethers.deployContract("MyToken", [
+    "My Token", // name
+    "MTK",      // symbol
+    1000000,    // initial supply (whole tokens)
+  ]);
+  await token.waitForDeployment();
+
+  console.log("MyToken deployed to:", await token.getAddress());
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});
